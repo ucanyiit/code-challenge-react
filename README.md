@@ -124,3 +124,5 @@ Output:
 - if the item has already favorited: Item's Add to Favorite button text should change to Add to Favorite (Favorilere Ekle), also it should move to it's original position.
 
 Note that the page should be implemented responsive design in mind.
+
+Added screenshots.
