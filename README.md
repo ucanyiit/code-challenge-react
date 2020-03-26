@@ -101,4 +101,26 @@ Restaurant contains `active_menu` which is where the menu data contained
 ### Your Task
 
 Your task is complete the frontend app that renders the Restaurant menu, and defines some actions that users
-can do. 
+can do.
+
+See the [Menu List style design screen shot](https://github.com/) for the overall page design, and the menu design in list theme.
+
+The actions you need to implement:
+
+#### search(str: String)
+Implement a search action, which will be triggered when user starts typing in the search bar at the top of the page.
+The search should be done locally, item matching should be done by item names.
+Output: Only the items matching should be displayed.
+
+#### changeTheme(theme: String)
+Implement a change menu theme action which will be triggered when the user clicks on the buttons right below the search bar.
+A list style is the default menu theme, and grid style can be found in [here](https://github.com)
+Output: Theme applied to the items in the menu
+
+#### toggleFavorite(item: Object)
+Implement a toggle favorite item action which will be triggered when the user clicks Add to Favorite (Favorilere Ekle) in the each item.
+Output:
+- if the item currently not favorited: Item's Add to Favorite button text should change to Favorited (Favorilerde), also the favorited item should move to the top of the list.
+- if the item has already favorited: Item's Add to Favorite button text should change to Add to Favorite (Favorilere Ekle), also it should move to it's original position.
+
+Note that the page should be implemented responsive design in mind.
