@@ -1,8 +1,8 @@
-# Picme Code Challange
-Welcome to the Picme Code Challange. This document explain what is given and
-what is expected in this challange.
+# Picme Code Challenge
+Welcome to the Picme Code Challenge. This document explain what is given and
+what is expected in this challenge.
 
-In this challange you are given a very simple web server that provides a
+In this challenge you are given a very simple web server that provides a
 restaurant menu data and you are expected to write the React application that
 displays the restaurant menu for the provided data.
 
