@@ -6,46 +6,43 @@ class Restaurant extends React.Component {
     let items = window.data.restaurant.active_menu.menu.items;
     let data = items[id].item;
     let img;
-    if (data.images.length > 0){
+    if (data.images.length > 0) {
       img = data.images[0]["100"];
     }
     else img = "";
+
     return (
-      <div class="card mb-2 mt-2">
-        <div class="d-flex">
-          <div class="flex-shrink-1 pl-3 pt-3">
-            <img class="rounded" src={img}/>
-          </div>
-          <div class="flex-grow-1">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-grow-1">
-                  <h4>{data["name"]}</h4>
-                </div>
-                <div>
-                  <p class="text-success font-weight-bold text-monospace">{data["price"]} TL</p>
-                </div>
+      <div className="col-12 col-lg-6 col-xl-4">
+        <div className="card mb-2 mt-2">
+          <div className="d-flex">
+            <div className="flex-shrink-1 pl-3 pt-3">
+              <img className="rounded" src={img} />
+            </div>
+            <div className="card-body d-flex flex-row">
+              <div className="d-flex flex-column">
+                <h5>{data["name"]}</h5>
+                <small className="mb-1">{data["ingredients"].join(", ")}</small>
               </div>
-              <div class="d-flex">
-                <div>
-                  <small class="mb-1">{data["ingredients"].join(", ")}</small>
-                </div>
-                <div class="ml-auto p-1">
-                  <button type="button" class="btn btn-outline-secondary">Favorilere ekle</button>
-                </div>
+              <div className="d-flex flex-column ml-auto">
+                <p className="text-success font-weight-bold text-monospace">{data["price"]} TL</p>
+                <button type="button" className="btn btn-outline-secondary">
+                  <img src="./images/heart.png" className="mr-2" width="20" height="20" />
+                  Favorilere ekle
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     )
+
   }
 
   printSections(item) {
     return (
       <div>
         <h2>{item.section}</h2>
-        <div class="list-group">
+        <div className="row">
           {item.items.map(i => (this.printItem(i)))}
         </div>
       </div>
@@ -58,10 +55,31 @@ class Restaurant extends React.Component {
     return sections.map(section => (this.printSections(section)))
   }
 
+  getThemeButtons() {
+    return (
+      <div className="row">
+        <div className="col-3" />
+        <div className="btn-group btn-group-toggle col-6" data-toggle="buttons">
+          <label className="btn btn-secondary active">
+            List
+          </label>
+          <label className="btn btn-secondary">
+            Grid
+          </label>
+        </div>
+        <div className="col-3" />
+      </div>
+    )
+  }
   render() {
     const restaurant = window.data.restaurant;
     console.log(window.data);
-    return this.getItemLists()
+    return (
+      <div className="w-100">
+        {this.getThemeButtons()}
+        {this.getItemLists()}
+      </div>
+    )
   }
 }
 
