@@ -17,12 +17,12 @@ class Restaurant extends React.Component {
 
     if (this.state.theme=="Grid") return (
       <div className="col-sm-6 col-md-3 col-lg-2">
-        <div class="card mb-2 mt-2">
+        <div className="card mb-2 mt-2">
           <div className="pt-3 pl-3 pr-3">
             <img className="rounded card-img-top" src={img} />
           </div>
-          <div class="card-body d-flex flex-column justify-content-between">
-            <p class="text-center text-monospace card-title">{data["name"]}</p>
+          <div className="card-body d-flex flex-column justify-content-between">
+            <p className="text-center text-monospace card-title">{data["name"]}</p>
             <button type="button" className="btn">
               <img src="./images/heart.png" className="mr-2" width="20" height="20" />
             </button>
@@ -81,9 +81,9 @@ class Restaurant extends React.Component {
   getSearch() {
     return (
       <form>
-        <div class="mb-3 form-group">
+        <div className="mb-3 form-group">
           <label for="search">Arama Yap</label>
-          <input id="search" type="text" class="form-control" placeholder="Yemek Adına Göre" aria-label="search" aria-describedby="basic-addon2" />
+          <input id="search" type="text" className="form-control" placeholder="Yemek Adına Göre" aria-label="search" aria-describedby="basic-addon2" />
         </div>
       </form>
     )
@@ -108,7 +108,8 @@ class Restaurant extends React.Component {
           <label onClick={() => this.changeTheme("List")} className={`btn btn-secondary ${this.state.theme=='List' && 'active'}`}>
             List
           </label>
-          <label onClick={() => this.changeTheme("Grid")} className={`btn btn-secondary ${this.state.theme=='List' && 'active'}`}>
+          <label onClick={() => this.changeTheme("Grid")} className={`btn btn-secondary ${this.state.theme=='Grid' && 'active'}`}>
+            Grid
           </label>
         </div>
         <div className="col-2" />
