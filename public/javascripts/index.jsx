@@ -14,23 +14,23 @@ class Restaurant extends React.Component {
   }
 
   getSectionItems(section, sectionID) {
-    section.items = section.items.map(item => this.getItemDetails(item, sectionID));
+    for (let i = 0; i < section.items.length; i++) section.items[i] = this.getItemDetails(section.items[i], sectionID, i);
     return section;
   }
 
-  getItemDetails(item, sectionID) {
+  getItemDetails(item, sectionID, i) {
     let idPattern = /\d+/g, id = item.match(idPattern) - 1;
     let details = this.state.items[id].item;
     details.fav = false;
-    details.id = id;
+    details.id = i;
     details.sectionID = sectionID;
     return details;
   }
 
   toggleFavorite(item) {
     let sections = this.state.sections;
-    sections[item.sectionID].items[item.id].fav ^=1;
-    this.setState({sections: sections});
+    sections[item.sectionID].items[item.id].fav ^= 1;
+    this.setState({ sections: sections });
   }
 
   getHeartButton(item) {
@@ -53,7 +53,7 @@ class Restaurant extends React.Component {
 
   getItemImageSrc(item) {
     if (item.images.length > 0) return item.images[0]["400"];
-    else return "";  
+    else return "";
   }
 
   printItem(item) {
