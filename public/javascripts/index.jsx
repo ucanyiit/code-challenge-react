@@ -2,34 +2,64 @@ class Restaurant extends React.Component {
 
   constructor(props) {
     super(props);
-    let categories = window.data.restaurant.active_menu.menu.item_order;
+    let tmpSections = window.data.restaurant.active_menu.menu.item_order;
     this.state = { items: window.data.restaurant.active_menu.menu.items };
-    categories=categories.map(category => this.getCategoryItems(category));
+    let sections = [];
+    for (let i = 0; i < tmpSections.length; i++) sections[i] = this.getSectionItems(tmpSections[i], i);
     this.state = {
       theme: "List",
       searchText: "",
-      sections: categories,
-      items: window.data.restaurant.active_menu.menu.items
+      sections: sections,
     };
   }
 
-  getCategoryItems(category){
-    category.items=category.items.map(item => this.getItemDetails(item));
-    return category;
+  getSectionItems(section, sectionID) {
+    section.items = section.items.map(item => this.getItemDetails(item, sectionID));
+    return section;
   }
 
-  getItemDetails(item){
-    let idPattern = /\d+/g;
-    let id = item.match(idPattern) - 1;
-    return this.state.items[id].item;
+  getItemDetails(item, sectionID) {
+    let idPattern = /\d+/g, id = item.match(idPattern) - 1;
+    let details = this.state.items[id].item;
+    details.fav = false;
+    details.id = id;
+    details.sectionID = sectionID;
+    return details;
+  }
+
+  toggleFavorite(item) {
+    let sections = this.state.sections;
+    sections[item.sectionID].items[item.id].fav ^=1;
+    this.setState({sections: sections});
+  }
+
+  getHeartButton(item) {
+    let theme = this.state.theme, fav = item.fav;
+    let imgsrc;
+    if (item.fav) imgsrc = "./images/heartf.png";
+    else imgsrc = "./images/heart.png";
+    if (theme == "Grid") return (
+      <button onClick={() => this.toggleFavorite(item)} type="button" className="btn">
+        <img src={imgsrc} width="20" height="20" />
+      </button>
+    )
+    else if (theme == "List") return (
+      <button onClick={() => this.toggleFavorite(item)} type="button" className="btn btn-outline-secondary mt-auto">
+        <img src={imgsrc} className="mr-2" width="16" height="16" />
+        {(fav && `Favorilerde`) || (!fav && `Favorilere Ekle`)}
+      </button>
+    )
+  }
+
+  getItemImageSrc(item) {
+    if (item.images.length > 0) return item.images[0]["400"];
+    else return "";  
   }
 
   printItem(item) {
-    let img;
-    if (item.images.length > 0) img = item.images[0]["400"];
-    else img = "";
-
-    if (this.state.theme == "Grid") return (
+    let theme = this.state.theme;
+    let img = this.getItemImageSrc(item);
+    if (theme == "Grid") return (
       <div className="col-sm-6 col-md-3 col-lg-2 mb-2 mt-2">
         <div className="card">
           <div className="pt-2 pl-2 pr-2">
@@ -37,14 +67,12 @@ class Restaurant extends React.Component {
           </div>
           <div className="card-body d-flex flex-column justify-content-between">
             <p className="text-center text-monospace card-title">{item["name"]}</p>
-            <button type="button" className="btn">
-              <img src="./images/heart.png" className="mr-2" width="20" height="20" />
-            </button>
+            {this.getHeartButton(item)}
           </div>
         </div>
       </div>
     )
-    else return (
+    else if (theme == "List") return (
       <div className="col-sm-12 col-lg-6 mb-2 mt-2">
         <div className="card">
           <div className="d-flex">
@@ -64,10 +92,7 @@ class Restaurant extends React.Component {
                 <div />
                 <div className="ml-auto d-flex flex-column">
                   <p className="text-right text-success font-weight-bold text-monospace">{item["price"]} TL</p>
-                  <button type="button" className="btn btn-outline-secondary mt-auto">
-                    <img src="./images/heart.png" className="mr-2" width="16" height="16" />
-                    <small>Favorilere ekle</small>
-                  </button>
+                  {this.getHeartButton(item)}
                 </div>
               </div>
             </div>
@@ -97,12 +122,9 @@ class Restaurant extends React.Component {
 
   search(str) {
     let sections = JSON.parse(JSON.stringify(this.state.sections));
-    console.log(str);
-    for(let i=0;i<sections.length;i++){
-      sections[i].items=sections[i].items.filter(i => i["name"].includes(str));
-      console.log(sections[i]);
-    }
-    if(str==="") return sections;
+    for (let i = 0; i < sections.length; i++) sections[i].items = sections[i].items.filter(i => i["name"].toLowerCase().includes(str.toLowerCase()));
+
+    if (str === "") return sections;
     return sections;
   }
 
@@ -124,14 +146,8 @@ class Restaurant extends React.Component {
   }
 
   changeTheme(theme) {
-    if (theme == "Grid") {
-      console.log("Theme changed: Grid")
-      this.setState({ theme: "Grid" });
-    }
-    else if (theme == "List") {
-      console.log("Theme changed: List")
-      this.setState({ theme: "List" });
-    }
+    if (theme == "Grid") this.setState({ theme: "Grid" });
+    else if (theme == "List") this.setState({ theme: "List" });
   }
 
   getThemeButtons() {
